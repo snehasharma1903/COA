@@ -5,36 +5,54 @@ import static java.lang.Math.abs;
 public class FloatAddSub {
 
 
+    static String shr(String a) {
+        char[] c_arr = a.toCharArray();
+        for (int j = a.length()-1; j >0; j--)
+            c_arr[j ] = c_arr[j-1];
+        c_arr[0] = '0';
+        String c = new String(c_arr);
+        return c;
+    }
+
+    static String shl(String a){
+        char[] c_arr = a.toCharArray();
+        for (int j = a.length()-1; j >0; j--)
+            c_arr[j-1 ] = c_arr[j];
+        c_arr[a.length()-1] = '0';
+        String c = new String(c_arr);
+        return c;
+    }
+
+
+
+
+
 
 
     public static void main(String[] args)
     {
-        int a[],b[],AR[] = new int[0],BQ[],AC[]=new int[4];
-        int d[]={0,0,0,0};
-        int c[]={0,0,0,1};
+        String a,b,AR ,BQ,AC;
+        String d="0000";
+        String c="0001";
+        String num=new String();
+        String num1=new String();
+
         Scanner sc=new Scanner(System.in);
         System.out.println("Enter the first floating point no(4 digit binary no)");
         System.out.println("Enter the mantissa");
-        for (int i = 0; i <4 ; i++) {
-            AR[i]=sc.nextInt();
-        }
+        AR=sc.next();
         System.out.println("Enter the exponent");
-        for (int i = 0; i < 4; i++) {
-            a[i] = sc.nextInt();
-        }
+        a = sc.next();
 
         System.out.println("Enter the second floating point no(4 digit binary no)");
         System.out.println("Enter the mantissa");
-        for (int i = 0; i <4 ; i++) {
-            BQ[i]=sc.nextInt();
-        }
+        BQ=sc.next();
         System.out.println("Enter the exponent");
-        for (int i = 0; i < 4; i++) {
-            b[i] = sc.nextInt();
-        }
+        b = sc.next();
+        int diff=abs(Integer.parseInt(a,2)-Integer.parseInt(b,2));
 
         System.out.println("Press 0 for addition and 1 for subtraction");
-        boolean op=sc.nextBoolean();
+        int op=sc.nextInt();
 
         AC=AR;
 
@@ -54,44 +72,66 @@ public class FloatAddSub {
 
 
         //comparing exponents a and b
-            int j=1;
+
             int big=2;
-            do{
-                if(a[j]>b[j]){
+                if(Integer.parseInt(a,2)>Integer.parseInt(b,2)){
                     big=0;
             }
-                else if(a[j]<b[j]){
+                else if(Integer.parseInt(a,2)>Integer.parseInt(b,2)){
                     big=1;
             }
-                else
-                    break;
-            }while(j<4);
 
-            if(big==0){
-                for (int i = 0; i <3 ; i++)
-                    BQ[i+1]=BQ[i];
-                BQ[0]=0;
-                AdderSubtractor(a,c,0);
-                big=2;
+
+            if(big==0) {
+                do {
+                    BQ = shr(BQ);
+                    int temp = Integer.parseInt(a, 2);
+                    temp = temp + 1;
+                    a = Integer.toBinaryString(temp);
+                } while (a != b);
+                big = 2;
+                System.out.println(BQ);
             }
             else if(big==1) {
-                for (int i = 0; i < 3; i++)
-                    AC[i + 1] = AC[i];
-                AC[0] = 0;
-            AdderSubtractor(b, c, 0);
-            big=2;
+                do {
+                    AC = shr(AC);
+                    int temp = Integer.parseInt(a, 2);
+                    temp = temp + 1;
+                    b = Integer.toBinaryString(temp);
+
+                } while (a != b);
+                big = 2;
+                System.out.println(AC);
             }
             else if(big==2) {
 
-                if (op == false) {
-                    AC = AdderSubtractor(AC, BQ, 0);
+                if (op == 0) {
+                    int n1 = Integer.parseInt(AC, 2);
+                    int n2 = Integer.parseInt(BQ,2);
+                    int temp=n1+n2;
+                    AC = Integer.toBinaryString(temp);
+                    System.out.println(AC);
+
                 }
 
-                if (op == true) {
-                    AC = AdderSubtractor(AC, BQ, 1);
+                if (op == 1) {
+                    int n1 = Integer.parseInt(AC, 2);
+                    int n2 = Integer.parseInt(BQ,2);
+                    int temp=n1-n2;
+                    AC = Integer.toBinaryString(temp);
+                    System.out.println(AC);
+                }
+                while(diff!=0)
+                {
+                    shl(AC);
+                    diff=diff-1;
                 }
 
-                //not yet found a solution for normalising
+                System.out.println(AC+" is the final answer");
+
+
+            }
+
         }
 
 
